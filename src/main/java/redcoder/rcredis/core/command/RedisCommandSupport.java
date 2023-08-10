@@ -7,7 +7,6 @@ import redcoder.rcredis.core.io.RedisInputStream;
 import redcoder.rcredis.core.io.RedisOutputStream;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import static redcoder.rcredis.core.ProtocolConstant.*;
 
@@ -19,32 +18,42 @@ public abstract class RedisCommandSupport {
         this.connection = connection;
     }
 
-    protected Object sendCommand(RedisCommand command, String... args) {
+    protected Object sendCommand(RedisCommand command, byte[]... args) {
         RedisInputStream in = connection.getInputStream();
         RedisOutputStream out = connection.getOutputStream();
         try {
             out.write(ASTERISK_BYTE);
-            out.write(args.length + 1 + '0');
-            out.writeCRLF();
-            out.writeBulkString(command.name());
-            for (String arg : args) {
-                out.writeBulkString(arg);
+            out.writeIntCRLF(args.length + 1);
+            // write command name
+            byte[] c_bytes = command.name().getBytes();
+            out.write(DOLLAR_BYTE);
+            out.writeIntCRLF(c_bytes.length);
+            out.writeByteCRLF(c_bytes);
+            // write args
+            for (byte[] arg : args) {
+                out.write(DOLLAR_BYTE);
+                out.writeIntCRLF(arg.length);
+                out.writeByteCRLF(arg);
             }
             out.flush();
 
+            // process reply
             byte b = in.readByte();
             switch (b) {
                 case PLUS_BYTE:
+                    // simple string reply
                     return in.readLine();
                 case DOLLAR_BYTE:
+                    // bulk string reply
                     int len = in.readInt();
                     byte[] bytes = new byte[len];
                     in.readBytes(bytes);
-                    return new String(bytes, StandardCharsets.UTF_8);
+                    return bytes;
                 case COLON_BYTE:
                     // integer reply
                     return in.readLong();
                 case ASTERISK_BYTE:
+                    // byte array reply
                     throw new UnsupportedOperationException();
                 case MINUS_BYTE:
                     // error reply

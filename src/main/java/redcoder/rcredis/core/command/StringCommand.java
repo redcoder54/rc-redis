@@ -4,13 +4,15 @@ import java.util.concurrent.TimeUnit;
 
 public interface StringCommand {
 
-    void set(String key, String value);
+    byte[] PX = {'P', 'X'};
 
-    void set(String key, String value, long timeout, TimeUnit unit);
+    void set(byte[] key, byte[] value);
 
-    long incr(String key);
+    void set(byte[] key, byte[] value, long timeout, TimeUnit unit);
 
-    long decr(String key);
+    long incr(byte[] key);
 
-    String get(String key);
+    long decr(byte[] key);
+
+    byte[] get(byte[] key);
 }

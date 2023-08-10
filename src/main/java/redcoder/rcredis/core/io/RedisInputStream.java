@@ -44,7 +44,7 @@ public class RedisInputStream extends FilterInputStream {
     }
 
     public String readLine() throws IOException {
-        return new String(readLineBytes(), StandardCharsets.UTF_8);
+        return new String(readLineBytes());
     }
 
     public int readInt() {

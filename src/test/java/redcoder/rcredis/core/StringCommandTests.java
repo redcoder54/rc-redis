@@ -25,32 +25,32 @@ public class StringCommandTests {
 
     @Test
     void set() {
-        command.set("name", "john");
+        command.set("name".getBytes(), "john".getBytes());
     }
 
     @Test
     void set_with_timeout() {
-        command.set("age", "18", 1, TimeUnit.MINUTES);
-        assertThat(command.get("age")).isEqualTo("18");
+        command.set("age".getBytes(), "18".getBytes(), 1, TimeUnit.MINUTES);
+        assertThat(new String(command.get("age".getBytes()))).isEqualTo("18");
     }
 
     @Test
     void get() {
-        String value = command.get("name");
-        assertThat(value).isEqualTo("john");
+        byte[] value = command.get("name".getBytes());
+        assertThat(new String(value)).isEqualTo("john");
     }
 
     @Test
     void incr() {
-        command.set("count", "0");
-        assertThat(command.incr("count")).isEqualTo(1);
-        assertThat(command.incr("count")).isEqualTo(2);
+        command.set("count".getBytes(), "0".getBytes());
+        assertThat(command.incr("count".getBytes())).isEqualTo(1);
+        assertThat(command.incr("count".getBytes())).isEqualTo(2);
     }
 
     @Test
     void decr() {
-        command.set("count", "2");
-        assertThat(command.decr("count")).isEqualTo(1);
-        assertThat(command.decr("count")).isEqualTo(0);
+        command.set("count".getBytes(), "2".getBytes());
+        assertThat(command.decr("count".getBytes())).isEqualTo(1);
+        assertThat(command.decr("count".getBytes())).isEqualTo(0);
     }
 }
