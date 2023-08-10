@@ -1,17 +1,9 @@
 package redcoder.rcredis.core.command;
 
 import redcoder.rcredis.core.RedisCommand;
-import redcoder.rcredis.core.RedisCommandException;
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisInputStream;
-import redcoder.rcredis.core.io.RedisOutputStream;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
-
-import static redcoder.rcredis.core.ProtocolConstant.DOLLAR_BYTE;
-import static redcoder.rcredis.core.ProtocolConstant.OK;
 
 public class StringCommandImpl extends RedisCommandSupport implements StringCommand {
 

@@ -10,5 +10,4 @@ public final class ProtocolConstant {
     public static final byte COLON_BYTE = ':';
     public static final byte DOLLAR_BYTE = '$';
     public static final byte ASTERISK_BYTE = '*';
-    public static final String OK = "OK";
 }
