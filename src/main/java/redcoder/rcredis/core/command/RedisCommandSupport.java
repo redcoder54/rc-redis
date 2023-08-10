@@ -8,7 +8,6 @@ import redcoder.rcredis.core.io.RedisOutputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +19,10 @@ public abstract class RedisCommandSupport {
 
     public RedisCommandSupport(RedisConnection connection) {
         this.connection = connection;
+    }
+
+    protected byte[] convertToBytes(long i) {
+        return String.valueOf(i).getBytes();
     }
 
     protected byte[][] mergeByteArray(byte[] first, byte[][] src) {

@@ -20,4 +20,15 @@ public enum RedisCommand {
     SREM,
     SPOP,
     SMEMBERS,
+
+    // list
+    LLEN,
+    LPUSH,
+    LPUSHX,
+    LRANGE,
+    LPOP,
+    RPUSH,
+    RPUSHX,
+    RRANGE,
+    RPOP,
 }
