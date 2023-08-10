@@ -52,10 +52,15 @@ public class RedisInputStream extends FilterInputStream {
     }
 
     public long readLong() {
+        boolean isNeg = false;
         long value = 0;
         while (true) {
             fillBufIfNecessary();
             byte b = buf[pos++];
+            if (b == '-') {
+                isNeg = true;
+                continue;
+            }
             if (b == '\r') {
                 byte c = buf[pos++];
                 if (c != '\n') {
@@ -65,7 +70,7 @@ public class RedisInputStream extends FilterInputStream {
             }
             value = value * 10 + (b - '0');
         }
-        return value;
+        return isNeg ? (-value) : value;
     }
 
     public void readBytes(byte[] bytes) {

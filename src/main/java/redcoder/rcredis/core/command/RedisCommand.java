@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 public interface RedisCommand {
 
-    void expire(String key, long timeout, TimeUnit unit);
+    int expire(byte[] key, long timeout, TimeUnit unit);
+
+    int del(byte[] key);
 
 }

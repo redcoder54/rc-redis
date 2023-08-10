@@ -11,12 +11,11 @@ public class RedisOutputStream extends FilterOutputStream {
     }
 
     public void writeCRLF() throws IOException {
-        out.write('\r');
-        out.write('\n');
+        out.write(new byte[]{'\r', '\n'});
     }
 
     public void writeIntCRLF(int i) throws IOException {
-        out.write(i + '0');
+        out.write(String.valueOf(i).getBytes());
         writeCRLF();
     }
 

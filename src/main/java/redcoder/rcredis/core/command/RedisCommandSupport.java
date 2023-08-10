@@ -7,6 +7,10 @@ import redcoder.rcredis.core.io.RedisInputStream;
 import redcoder.rcredis.core.io.RedisOutputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static redcoder.rcredis.core.ProtocolConstant.*;
 
@@ -18,7 +22,14 @@ public abstract class RedisCommandSupport {
         this.connection = connection;
     }
 
-    protected Object sendCommand(RedisCommand command, byte[]... args) {
+    protected byte[][] mergeByteArray(byte[] first, byte[][] src) {
+        byte[][] dest = new byte[src.length + 1][];
+        dest[0] = first;
+        System.arraycopy(src, 0, dest, 1, src.length);
+        return dest;
+    }
+
+    protected Object executeCommand(RedisCommand command, byte[]... args) {
         RedisInputStream in = connection.getInputStream();
         RedisOutputStream out = connection.getOutputStream();
         try {
@@ -38,33 +49,61 @@ public abstract class RedisCommandSupport {
             out.flush();
 
             // process reply
-            byte b = in.readByte();
-            switch (b) {
-                case PLUS_BYTE:
-                    // simple string reply
-                    return in.readLine();
-                case DOLLAR_BYTE:
-                    // bulk string reply
-                    int len = in.readInt();
-                    byte[] bytes = new byte[len];
-                    in.readBytes(bytes);
-                    return bytes;
-                case COLON_BYTE:
-                    // integer reply
-                    return in.readLong();
-                case ASTERISK_BYTE:
-                    // byte array reply
-                    throw new UnsupportedOperationException();
-                case MINUS_BYTE:
-                    // error reply
-                    String err = in.readLine();
-                    throw new RedisCommandException(String.format("Failed to execute command %s, redis server's reply: %s", command.name(), err));
-                default:
-                    throw new RedisCommandException("unknown reply: " + b + in.readLine());
-            }
-
+            return processReply(in);
         } catch (IOException e) {
             throw new RedisCommandException(e);
         }
+    }
+
+    private Object processReply(RedisInputStream in) throws IOException {
+        byte b = in.readByte();
+        switch (b) {
+            case PLUS_BYTE:
+                // simple string reply
+                return in.readLine();
+            case DOLLAR_BYTE:
+                // bulk string reply
+                return processBulkStringReply(in);
+            case COLON_BYTE:
+                // integer reply
+                return in.readLong();
+            case ASTERISK_BYTE:
+                // byte array reply
+                return processArrayReply(in);
+            case MINUS_BYTE:
+                // error reply
+                String err = in.readLine();
+                throw new RedisCommandException(String.format("Failed to execute command, redis server's reply: %s", err));
+            default:
+                throw new RedisCommandException("unknown reply: " + b + in.readLine());
+        }
+    }
+
+    private Object processBulkStringReply(RedisInputStream in) {
+        int len = in.readInt();
+        if (len == -1) {
+            // null reply
+            return null;
+        }
+        if (len == 0) {
+            // empty string
+            return "".getBytes();
+        }
+        byte[] bytes = new byte[len];
+        in.readBytes(bytes);
+        return bytes;
+    }
+
+    private Object processArrayReply(RedisInputStream in) throws IOException {
+        int alen = in.readInt();
+        if (alen == 0) {
+            // empty array
+            return Collections.emptyList();
+        }
+        List<Object> result = new ArrayList<>();
+        for (int i = 0; i < alen; i++) {
+            result.add(processReply(in));
+        }
+        return result;
     }
 }

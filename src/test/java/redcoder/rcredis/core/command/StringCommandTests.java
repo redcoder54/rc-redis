@@ -1,4 +1,4 @@
-package redcoder.rcredis.core;
+package redcoder.rcredis.core.command;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.io.RedisConnectionFactory;
 import redcoder.rcredis.core.io.RedisConnectionFactoryImpl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,6 +39,13 @@ public class StringCommandTests {
     void get() {
         byte[] value = command.get("name".getBytes());
         assertThat(new String(value)).isEqualTo("john");
+
+        // empty string
+        command.set("empty".getBytes(), "".getBytes());
+        assertThat(new String(command.get("empty".getBytes()))).isEqualTo("");
+
+        // nil
+        assertThat(command.get("nooooooooooooooooooo".getBytes(StandardCharsets.UTF_8))).isNull();
     }
 
     @Test

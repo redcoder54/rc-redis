@@ -4,6 +4,7 @@ public enum RedisCommand {
     EXPIRE,
     TTL,
     PING,
+    DEL,
 
     // string
     GET,
@@ -13,4 +14,10 @@ public enum RedisCommand {
     SETNX,
     INCR,
     DECR,
+
+    // set
+    SADD,
+    SREM,
+    SPOP,
+    SMEMBERS,
 }

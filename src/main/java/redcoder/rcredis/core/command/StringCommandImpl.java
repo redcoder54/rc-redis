@@ -6,7 +6,7 @@ import redcoder.rcredis.core.io.RedisConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
-public class StringCommandImpl extends RedisCommandSupport implements StringCommand {
+class StringCommandImpl extends RedisCommandSupport implements StringCommand {
 
     public StringCommandImpl(RedisConnection connection) {
         super(connection);
@@ -14,29 +14,29 @@ public class StringCommandImpl extends RedisCommandSupport implements StringComm
 
     @Override
     public void set(byte[] key, byte[] value) {
-        sendCommand(RedisCommand.SET, key, value);
+        executeCommand(RedisCommand.SET, key, value);
     }
 
     @Override
     public void set(byte[] key, byte[] value, long timeout, TimeUnit unit) {
-        sendCommand(RedisCommand.SET, key, value, PX, String.valueOf(unit.toMillis(timeout)).getBytes(StandardCharsets.UTF_8));
+        executeCommand(RedisCommand.SET, key, value, PX, String.valueOf(unit.toMillis(timeout)).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
     public byte[] get(byte[] key) {
-        Object resp = sendCommand(RedisCommand.GET, key);
+        Object resp = executeCommand(RedisCommand.GET, key);
         return (byte[]) resp;
     }
 
     @Override
     public long incr(byte[] key) {
-        Object obj = sendCommand(RedisCommand.INCR, key);
+        Object obj = executeCommand(RedisCommand.INCR, key);
         return (long) obj;
     }
 
     @Override
     public long decr(byte[] key) {
-        Object obj = sendCommand(RedisCommand.DECR, key);
+        Object obj = executeCommand(RedisCommand.DECR, key);
         return (long) obj;
     }
 }
