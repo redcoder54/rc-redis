@@ -9,16 +9,16 @@ import redcoder.rcredis.core.io.RedisConnectionFactoryImpl;
 
 import java.util.concurrent.TimeUnit;
 
-public class RedisCommandTests {
+public class BasicCommandTests {
 
-    private static RedisCommand command;
+    private static BasicCommand command;
     private static StringCommand stringCommand;
 
     @BeforeAll
     public static void beforeAll() {
         RedisConnectionFactory factory = new RedisConnectionFactoryImpl();
         RedisConnection connection = factory.create("localhost", 7370);
-        command = new RedisCommandImpl(connection);
+        command = new BasicCommandImpl(connection);
         stringCommand = new StringCommandImpl(connection);
     }
 

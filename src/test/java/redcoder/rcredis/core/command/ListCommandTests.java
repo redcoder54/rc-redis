@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListCommandTests {
 
-    private static RedisCommand command;
+    private static BasicCommand command;
     private static ListCommand listCommand;
 
     @BeforeAll
     public static void beforeAll() {
         RedisConnectionFactory factory = new RedisConnectionFactoryImpl();
         RedisConnection connection = factory.create("localhost", 7370);
-        command = new RedisCommandImpl(connection);
+        command = new BasicCommandImpl(connection);
         listCommand = new ListCommandImpl(connection);
     }
 

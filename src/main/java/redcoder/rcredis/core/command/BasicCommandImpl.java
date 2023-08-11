@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit;
 import static redcoder.rcredis.core.RedisCommand.DEL;
 import static redcoder.rcredis.core.RedisCommand.EXPIRE;
 
-public class RedisCommandImpl extends RedisCommandSupport implements RedisCommand {
+public class BasicCommandImpl extends RedisCommandSupport implements BasicCommand {
 
-    public RedisCommandImpl(RedisConnection connection) {
+    public BasicCommandImpl(RedisConnection connection) {
         super(connection);
     }
 

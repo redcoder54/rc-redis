@@ -1,7 +1,5 @@
 package redcoder.rcredis.core.command;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.io.RedisConnection;
@@ -13,18 +11,18 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.*;
+import static org.assertj.core.api.InstanceOfAssertFactories.BYTE_ARRAY;
 
 public class ZSetCommandTests {
 
-    private static RedisCommand command;
+    private static BasicCommand command;
     private static ZSetCommand zSetCommand;
 
     @BeforeAll
     static void beforeAll() {
         RedisConnectionFactory factory = new RedisConnectionFactoryImpl();
         RedisConnection connection = factory.create("localhost", 7370);
-        command = new RedisCommandImpl(connection);
+        command = new BasicCommandImpl(connection);
         zSetCommand = new ZSetCommandImpl(connection);
     }
 

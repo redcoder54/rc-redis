@@ -42,4 +42,10 @@ public enum RedisCommand {
     ZREVRANGEBYSCORE,
     ZREM,
     ZSCORE,
+
+    // hash
+    HSET,
+    HMSET,
+    HGET,
+    HMGET,
 }
