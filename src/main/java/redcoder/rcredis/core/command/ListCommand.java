@@ -18,7 +18,5 @@ public interface ListCommand {
 
     long rpushx(byte[] key, byte[]... elements);
 
-    List<Object> rrange(byte[] key, long start, long end);
-
     byte[] rpop(byte[] key);
 }

@@ -100,18 +100,6 @@ public class ListCommandTests {
     }
 
     @Test
-    void rrange() {
-        byte[] key = "ListCommandTests".getBytes();
-        command.del(key);
-        assertThat(listCommand.rpush(key, "a1".getBytes(), "a2".getBytes(), "a3".getBytes())).isEqualTo(3);
-        List<Object> list = listCommand.lrange(key, 0, -1);
-        assertThat(list).size().isEqualTo(3);
-        assertThat(list).extracting(o -> new String((byte[]) o)).element(0).isEqualTo("a1");
-        assertThat(list).extracting(o -> new String((byte[]) o)).element(1).isEqualTo("a2");
-        assertThat(list).extracting(o -> new String((byte[]) o)).element(2).isEqualTo("a3");
-    }
-
-    @Test
     void rpop() {
         byte[] key = "ListCommandTests".getBytes();
         command.del(key);

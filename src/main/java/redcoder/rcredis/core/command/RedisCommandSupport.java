@@ -25,6 +25,10 @@ public abstract class RedisCommandSupport {
         return String.valueOf(i).getBytes();
     }
 
+    protected byte[] convertToBytes(double i) {
+        return String.valueOf(i).getBytes();
+    }
+
     protected byte[][] mergeByteArray(byte[] first, byte[][] src) {
         byte[][] dest = new byte[src.length + 1][];
         dest[0] = first;

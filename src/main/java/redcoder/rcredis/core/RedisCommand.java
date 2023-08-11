@@ -31,4 +31,15 @@ public enum RedisCommand {
     RPUSHX,
     RRANGE,
     RPOP,
+
+    // zseet
+    ZADD,
+    ZCARD,
+    ZCOUNT,
+    ZRANGE,
+    ZRANGEBYSCORE,
+    ZREVRANGE,
+    ZREVRANGEBYSCORE,
+    ZREM,
+    ZSCORE,
 }

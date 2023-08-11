@@ -47,11 +47,6 @@ class ListCommandImpl extends RedisCommandSupport implements ListCommand {
     }
 
     @Override
-    public List<Object> rrange(byte[] key, long start, long end) {
-        return (List<Object>) executeCommand(RedisCommand.RRANGE, key, convertToBytes(start), convertToBytes(end));
-    }
-
-    @Override
     public byte[] rpop(byte[] key) {
         return (byte[]) executeCommand(RedisCommand.RPOP, key);
     }
