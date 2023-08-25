@@ -3,33 +3,33 @@ package redcoder.rcredis.core.operation;
 import java.util.List;
 import java.util.Map;
 
-public interface RedisZSetOperation<K, V> {
+public interface RedisZSetOperation {
 
-    long zadd(K key, double score, V member);
+    long zadd(String key, double score, String member);
 
-    long zadd(K key, Map<K, Double> memberScores);
+    long zadd(String key, Map<String, Double> memberScores);
 
-    long zcard(K key);
+    long zcard(String key);
 
-    long zcount(K key, double min, double max);
+    long zcount(String key, double min, double max);
 
-    List<V> zrange(K key, long start, long stop);
+    List<String> zrange(String key, long start, long stop);
 
-    List<Tuple<V, Double>> zrangeWithScores(K key, long start, long stop);
+    List<Tuple<String, Double>> zrangeWithScores(String key, long start, long stop);
 
-    List<V> zrangeByScore(K key, double min, double max);
+    List<String> zrangeByScore(String key, double min, double max);
 
-    List<Tuple<V, Double>> zrangeByScoreWithScores(K key, double min, double max);
+    List<Tuple<String, Double>> zrangeByScoreWithScores(String key, double min, double max);
 
-    List<V> zrevRange(K key, long start, long stop);
+    List<String> zrevRange(String key, long start, long stop);
 
-    List<Tuple<V, Double>> zrevRangeWithScores(K key, long start, long stop);
+    List<Tuple<String, Double>> zrevRangeWithScores(String key, long start, long stop);
 
-    List<V> zrevRangeByScore(K key, double min, double max);
+    List<String> zrevRangeByScore(String key, double min, double max);
 
-    List<Tuple<V, Double>> zrevRangeByScoreWithScores(K key, double min, double max);
+    List<Tuple<String, Double>> zrevRangeByScoreWithScores(String key, double min, double max);
 
-    long zrem(K key, V... members);
+    long zrem(String key, String... members);
 
-    Double zscore(K key, V members);
+    Double zscore(String key, String members);
 }

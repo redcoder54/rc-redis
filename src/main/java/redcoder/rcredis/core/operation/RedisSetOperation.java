@@ -2,15 +2,15 @@ package redcoder.rcredis.core.operation;
 
 import java.util.List;
 
-public interface RedisSetOperation<K, V> {
+public interface RedisSetOperation {
 
-    int sadd(K key, V... members);
+    int sadd(String key, String... members);
 
-    int srem(K key, V... members);
+    int srem(String key, String... members);
 
-    V spop(K key);
+    String spop(String key);
 
-    List<V> spop(K key, int count);
+    List<String> spop(String key, int count);
 
-    List<V> smembers(K key);
+    List<String> smembers(String key);
 }

@@ -2,15 +2,15 @@ package redcoder.rcredis.core.operation;
 
 import java.util.concurrent.TimeUnit;
 
-public interface RedisStringOperation<K, V> {
+public interface RedisStringOperation {
 
-    void set(K key, V value);
+    void set(String key, String value);
 
-    void set(K key, V value, long timeout, TimeUnit unit);
+    void set(String key, String value, long timeout, TimeUnit unit);
 
-    long incr(K key);
+    long incr(String key);
 
-    long decr(K key);
+    long decr(String key);
 
-    V get(K key);
+    String get(String key);
 }

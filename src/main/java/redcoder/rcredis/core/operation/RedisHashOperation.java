@@ -3,13 +3,13 @@ package redcoder.rcredis.core.operation;
 import java.util.List;
 import java.util.Map;
 
-public interface RedisHashOperation<K, HK, HV> {
+public interface RedisHashOperation {
 
-    long hset(K key, HK field, HV value);
+    long hset(String key, String field, String value);
 
-    void hmset(K key, Map<HK, HV> hash);
+    void hmset(String key, Map<String, String> hash);
 
-    HV hget(K key, HK field);
+    String hget(String key, String field);
 
-    List<HV> hmget(K key, HK... fields);
+    List<String> hmget(String key, String... fields);
 }

@@ -3,83 +3,78 @@ package redcoder.rcredis.core;
 import redcoder.rcredis.core.command.ListCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisListOperation;
-import redcoder.rcredis.core.operation.RedisSerializer;
+import redcoder.rcredis.core.operation.StringRedisSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class RedisListOperationImpl<K, V> implements RedisListOperation<K, V> {
-
-    private RedisSerializer<K> keySerializer;
-    private RedisSerializer<V> valueSerializer;
+class RedisListOperationImpl implements RedisListOperation {
+    
     private ListCommand listCommand;
+    private StringRedisSerializer serializer = new StringRedisSerializer();
 
-    public RedisListOperationImpl(RedisSerializer<K> keySerializer,
-                                  RedisSerializer<V> valueSerializer,
-                                  RedisConnection connection) {
-        this.keySerializer = keySerializer;
-        this.valueSerializer = valueSerializer;
+    public RedisListOperationImpl(RedisConnection connection) {
         this.listCommand = new RedisListCommandImpl(connection);
     }
 
     @Override
-    public long lpush(K key, V... elements) {
+    public long lpush(String key, String... elements) {
         byte[][] array = new byte[elements.length][];
         for (int i = 0; i < elements.length; i++) {
-            array[i] = valueSerializer.serialize(elements[i]);
+            array[i] = serializer.serialize(elements[i]);
         }
-        return listCommand.lpush(keySerializer.serialize(key), array);
+        return listCommand.lpush(serializer.serialize(key), array);
     }
 
     @Override
-    public long lpushx(K key, V element) {
-        return listCommand.lpushx(keySerializer.serialize(key), valueSerializer.serialize(element));
+    public long lpushx(String key, String element) {
+        return listCommand.lpushx(serializer.serialize(key), serializer.serialize(element));
     }
 
     @Override
-    public List<V> lrange(K key, long start, long end) {
-        List<Object> list = listCommand.lrange(keySerializer.serialize(key), start, end);
-        List<V> result = new ArrayList<>();
+    public List<String> lrange(String key, long start, long end) {
+        List<Object> list = listCommand.lrange(serializer.serialize(key), start, end);
+        List<String> result = new ArrayList<>();
         for (Object o : list) {
-            result.add(valueSerializer.deserialize((byte[]) o));
+            result.add(serializer.deserialize((byte[]) o));
         }
         return result;
     }
 
     @Override
-    public V lpop(K key) {
-        byte[] bytes = listCommand.lpop(keySerializer.serialize(key));
+    public String lpop(String key) {
+        byte[] bytes = listCommand.lpop(serializer.serialize(key));
         if (bytes == null) {
             return null;
         }
-        return valueSerializer.deserialize(bytes);
+        return serializer.deserialize(bytes);
     }
 
     @Override
-    public long llen(K key) {
-        return listCommand.llen(keySerializer.serialize(key));
+    public long llen(String key) {
+        return listCommand.llen(serializer.serialize(key));
     }
 
     @Override
-    public long rpush(K key, V... elements) {
+    public long rpush(String key, String... elements) {
         byte[][] array = new byte[elements.length][];
         for (int i = 0; i < elements.length; i++) {
-            array[i] = valueSerializer.serialize(elements[i]);
+            array[i] = serializer.serialize(elements[i]);
         }
-        return listCommand.rpush(keySerializer.serialize(key), array);
+        return listCommand.rpush(serializer.serialize(key), array);
     }
 
     @Override
-    public long rpushx(K key, V element) {
-        return listCommand.rpushx(keySerializer.serialize(key), valueSerializer.serialize(element));
+    public long rpushx(String key, String element) {
+        return listCommand.rpushx(serializer.serialize(key), serializer.serialize(element));
     }
 
     @Override
-    public V rpop(K key) {
-        byte[] bytes = listCommand.rpop(keySerializer.serialize(key));
+    public String rpop(String key) {
+        byte[] bytes = listCommand.rpop(serializer.serialize(key));
         if (bytes == null) {
             return null;
         }
-        return valueSerializer.deserialize(bytes);
+        return serializer.deserialize(bytes);
     }
 }

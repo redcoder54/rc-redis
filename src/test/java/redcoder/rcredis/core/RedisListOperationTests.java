@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisListOperation;
-import redcoder.rcredis.core.operation.RedisSerializer;
-import redcoder.rcredis.core.operation.StringRedisSerializer;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,13 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RedisListOperationTests extends RedisTestSupport {
 
-    private static RedisListOperation<String, String> operation;
+    private static RedisListOperation operation;
 
     @BeforeAll
     static void beforeAll() {
         RedisConnection connection = getConnection();
-        RedisSerializer<String> serializer = new StringRedisSerializer();
-        operation = new RedisListOperationImpl<>(serializer, serializer, connection);
+        operation = new RedisListOperationImpl(connection);
     }
 
     @Test

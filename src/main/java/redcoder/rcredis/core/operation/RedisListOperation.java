@@ -2,22 +2,22 @@ package redcoder.rcredis.core.operation;
 
 import java.util.List;
 
-public interface RedisListOperation<K, V> {
+public interface RedisListOperation {
 
-    long lpush(K key, V... elements);
+    long lpush(String key, String... elements);
 
-    long lpushx(K key, V element);
+    long lpushx(String key, String element);
 
-    List<V> lrange(K key, long start, long end);
+    List<String> lrange(String key, long start, long end);
 
-    V lpop(K key);
+    String lpop(String key);
 
-    long llen(K key);
+    long llen(String key);
 
-    long rpush(K key, V... elements);
+    long rpush(String key, String... elements);
 
-    long rpushx(K key, V element);
+    long rpushx(String key, String element);
 
-    V rpop(K key);
+    String rpop(String key);
 
 }

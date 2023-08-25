@@ -1,60 +1,217 @@
 package redcoder.rcredis.core;
 
+import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.io.RedisConnectionFactory;
 import redcoder.rcredis.core.operation.*;
 
-public class RedisClient<K, V> {
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-    private RedisSerializer<K> keySerializer;
-    private RedisSerializer<V> valueSerializer;
-    @SuppressWarnings("rawtypes")
-    private RedisSerializer hashKeySerializer;
-    @SuppressWarnings("rawtypes")
-    private RedisSerializer hashValueSerializer;
-    private RedisConnectionFactory connectionFactory;
+public class RedisClient implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation, RedisHashOperation {
+
+    private RedisStringOperation stringOperation;
+    private RedisListOperation listOperation;
+    private RedisSetOperation setOperation;
+    private RedisZSetOperation zSetOperation;
+    private RedisHashOperation hashOperation;
 
     public RedisClient(RedisConfiguration conf) {
-        init(conf);
+        RedisConnectionFactory connectionFactory = new RedisConnectionFactoryImpl(conf);
+        RedisConnection connection = connectionFactory.create();
+        this.stringOperation = new RedisStringOperationImpl(connection);
+        this.listOperation = new RedisListOperationImpl(connection);
+        this.setOperation = new RedisSetOperationImpl(connection);
+        this.zSetOperation = new RedisZSetOperationImpl(connection);
+        this.hashOperation = new RedisHashOperationImpl(connection);
     }
 
-    public RedisClient(RedisConfiguration conf,
-                       RedisSerializer<K> keySerializer,
-                       RedisSerializer<V> valueSerializer,
-                       RedisSerializer hashKeySerializer,
-                       RedisSerializer hashValueSerializer) {
-        this.keySerializer = keySerializer;
-        this.valueSerializer = valueSerializer;
-        this.hashKeySerializer = hashKeySerializer;
-        this.hashValueSerializer = hashValueSerializer;
-        init(conf);
+    // -------- string command
+    @Override
+    public void set(String key, String value) {
+        stringOperation.set(key, value);
     }
 
-    private void init(RedisConfiguration conf) {
-        RedisSerializer serializer = new StringRedisSerializer();
-        this.keySerializer = serializer;
-        this.valueSerializer = serializer;
-        this.hashKeySerializer = serializer;
-        this.hashValueSerializer = serializer;
-        this.connectionFactory = new RedisConnectionFactoryImpl(conf);
+    @Override
+    public void set(String key, String value, long timeout, TimeUnit unit) {
+        stringOperation.set(key, value, timeout, unit);
     }
 
-    public RedisStringOperation<K, V> stringCommand() {
-        return new RedisStringOperationImpl<>(keySerializer, valueSerializer, connectionFactory.create());
+    @Override
+    public long incr(String key) {
+        return stringOperation.incr(key);
     }
 
-    public RedisListOperation<K,V> listCommand() {
-        return new RedisListOperationImpl<>(keySerializer, valueSerializer, connectionFactory.create());
+    @Override
+    public long decr(String key) {
+        return stringOperation.decr(key);
     }
 
-    public RedisSetOperation<K,V> setCommand() {
-        return new RedisSetOperationImpl<>(keySerializer, valueSerializer, connectionFactory.create());
+    @Override
+    public String get(String key) {
+        return stringOperation.get(key);
     }
 
-    public RedisZSetOperation<K,V> zSetCommand() {
-        return new RedisZSetOperationImpl<>(keySerializer, valueSerializer, connectionFactory.create());
+    // ---------- list command
+
+    @Override
+    public long lpush(String key, String... elements) {
+        return listOperation.lpush(key, elements);
     }
 
-    public <HK,HV> RedisHashOperation<K,HK,HV> hashCommand() {
-        return new RedisHashOperationImpl<>(keySerializer, hashKeySerializer, hashValueSerializer, connectionFactory.create());
+    @Override
+    public long lpushx(String key, String element) {
+        return listOperation.lpushx(key, element);
+    }
+
+    @Override
+    public List<String> lrange(String key, long start, long end) {
+        return listOperation.lrange(key, start, end);
+    }
+
+    @Override
+    public String lpop(String key) {
+        return listOperation.lpop(key);
+    }
+
+    @Override
+    public long llen(String key) {
+        return listOperation.llen(key);
+    }
+
+    @Override
+    public long rpush(String key, String... elements) {
+        return listOperation.rpush(key, elements);
+    }
+
+    @Override
+    public long rpushx(String key, String element) {
+        return listOperation.rpushx(key, element);
+    }
+
+    @Override
+    public String rpop(String key) {
+        return listOperation.rpop(key);
+    }
+
+    // ------------ set command
+
+    @Override
+    public int sadd(String key, String... members) {
+        return setOperation.sadd(key, members);
+    }
+
+    @Override
+    public int srem(String key, String... members) {
+        return setOperation.srem(key, members);
+    }
+
+    @Override
+    public String spop(String key) {
+        return setOperation.spop(key);
+    }
+
+    @Override
+    public List<String> spop(String key, int count) {
+        return setOperation.spop(key, count);
+    }
+
+    @Override
+    public List<String> smembers(String key) {
+        return setOperation.smembers(key);
+    }
+
+    // ------------- zset command
+
+    @Override
+    public long zadd(String key, double score, String member) {
+        return zSetOperation.zadd(key, score, member);
+    }
+
+    @Override
+    public long zadd(String key, Map<String, Double> memberScores) {
+        return zadd(key, memberScores);
+    }
+
+    @Override
+    public long zcard(String key) {
+        return zSetOperation.zcard(key);
+    }
+
+    @Override
+    public long zcount(String key, double min, double max) {
+        return zSetOperation.zcount(key, min, max);
+    }
+
+    @Override
+    public List<String> zrange(String key, long start, long stop) {
+        return zSetOperation.zrange(key, start, stop);
+    }
+
+    @Override
+    public List<Tuple<String, Double>> zrangeWithScores(String key, long start, long stop) {
+        return zSetOperation.zrangeWithScores(key, start, stop);
+    }
+
+    @Override
+    public List<String> zrangeByScore(String key, double min, double max) {
+        return zSetOperation.zrangeByScore(key, min, max);
+    }
+
+    @Override
+    public List<Tuple<String, Double>> zrangeByScoreWithScores(String key, double min, double max) {
+        return zSetOperation.zrangeByScoreWithScores(key, min, max);
+    }
+
+    @Override
+    public List<String> zrevRange(String key, long start, long stop) {
+        return zSetOperation.zrevRange(key, start, stop);
+    }
+
+    @Override
+    public List<Tuple<String, Double>> zrevRangeWithScores(String key, long start, long stop) {
+        return zSetOperation.zrevRangeWithScores(key, start, stop);
+    }
+
+    @Override
+    public List<String> zrevRangeByScore(String key, double min, double max) {
+        return zSetOperation.zrevRangeByScore(key, min, max);
+    }
+
+    @Override
+    public List<Tuple<String, Double>> zrevRangeByScoreWithScores(String key, double min, double max) {
+        return zSetOperation.zrevRangeByScoreWithScores(key, min, max);
+    }
+
+    @Override
+    public long zrem(String key, String... members) {
+        return zSetOperation.zrem(key, members);
+    }
+
+    @Override
+    public Double zscore(String key, String members) {
+        return zSetOperation.zscore(key, members);
+    }
+
+    // ------------- hash command
+
+    @Override
+    public long hset(String key, String field, String value) {
+        return hashOperation.hset(key, field, value);
+    }
+
+    @Override
+    public void hmset(String key, Map<String, String> hash) {
+        hashOperation.hmset(key, hash);
+    }
+
+    @Override
+    public String hget(String key, String field) {
+        return hashOperation.hget(key,field);
+    }
+
+    @Override
+    public List<String> hmget(String key, String... fields) {
+        return hashOperation.hmget(key, fields);
     }
 }

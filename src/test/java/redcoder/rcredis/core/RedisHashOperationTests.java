@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisHashOperation;
-import redcoder.rcredis.core.operation.RedisSerializer;
-import redcoder.rcredis.core.operation.StringRedisSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +12,12 @@ import java.util.UUID;
 
 public class RedisHashOperationTests extends RedisTestSupport {
 
-    private static RedisHashOperation<String, String, String> operation;
+    private static RedisHashOperation operation;
 
     @BeforeAll
     static void beforeAll() {
         RedisConnection connection = getConnection();
-        RedisSerializer<String> serializer = new StringRedisSerializer();
-        operation = new RedisHashOperationImpl<>(serializer, serializer, serializer, connection);
+        operation = new RedisHashOperationImpl(connection);
     }
 
     @Test

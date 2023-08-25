@@ -3,9 +3,7 @@ package redcoder.rcredis.core;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.operation.RedisSerializer;
 import redcoder.rcredis.core.operation.RedisSetOperation;
-import redcoder.rcredis.core.operation.StringRedisSerializer;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,13 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RedisSetOperationTests extends RedisTestSupport {
 
-    private static RedisSetOperation<String, String> operation;
+    private static RedisSetOperation operation;
 
     @BeforeAll
     static void beforeAll() {
         RedisConnection connection = getConnection();
-        RedisSerializer<String> serializer = new StringRedisSerializer();
-        operation = new RedisSetOperationImpl<>(serializer, serializer, connection);
+        operation = new RedisSetOperationImpl(connection);
     }
 
     @Test
