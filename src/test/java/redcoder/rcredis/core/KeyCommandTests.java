@@ -1,25 +1,24 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import redcoder.rcredis.core.command.KeyCommand;
+import redcoder.rcredis.core.command.StringCommand;
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisConnectionFactory;
-import redcoder.rcredis.core.io.RedisConnectionFactoryImpl;
 
 import java.util.concurrent.TimeUnit;
 
-public class BasicCommandTests {
+public class KeyCommandTests extends RedisTestSupport {
 
-    private static BasicCommand command;
+    private static KeyCommand command;
     private static StringCommand stringCommand;
 
     @BeforeAll
     public static void beforeAll() {
-        RedisConnectionFactory factory = new RedisConnectionFactoryImpl();
-        RedisConnection connection = factory.create("localhost", 7370);
-        command = new BasicCommandImpl(connection);
-        stringCommand = new StringCommandImpl(connection);
+        RedisConnection connection = getConnection();
+        command = new RedisKeyCommandImpl(connection);
+        stringCommand = new RedisStringCommandImpl(connection);
     }
 
     @Test

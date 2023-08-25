@@ -6,7 +6,6 @@ import redcoder.rcredis.core.RedisConnectionException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 public class RedisInputStream extends FilterInputStream {
 

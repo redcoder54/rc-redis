@@ -6,7 +6,7 @@ public interface ListCommand {
 
     long lpush(byte[] key, byte[]... elements);
 
-    long lpushx(byte[] key, byte[]... elements);
+    long lpushx(byte[] key, byte[] element);
 
     List<Object> lrange(byte[] key, long start, long end);
 
@@ -16,7 +16,7 @@ public interface ListCommand {
 
     long rpush(byte[] key, byte[]... elements);
 
-    long rpushx(byte[] key, byte[]... elements);
+    long rpushx(byte[] key, byte[] element);
 
     byte[] rpop(byte[] key);
 }

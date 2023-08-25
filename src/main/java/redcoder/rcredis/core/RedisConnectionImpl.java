@@ -1,13 +1,13 @@
-package redcoder.rcredis.core.io;
+package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.RedisConnectionException;
+import redcoder.rcredis.core.io.RedisConnection;
+import redcoder.rcredis.core.io.RedisInputStream;
+import redcoder.rcredis.core.io.RedisOutputStream;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
-public class RedisConnectionImpl implements RedisConnection {
+class RedisConnectionImpl implements RedisConnection {
 
     private final Socket socket;
 

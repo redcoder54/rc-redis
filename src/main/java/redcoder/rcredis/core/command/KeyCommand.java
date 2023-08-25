@@ -2,7 +2,7 @@ package redcoder.rcredis.core.command;
 
 import java.util.concurrent.TimeUnit;
 
-public interface BasicCommand {
+public interface KeyCommand {
 
     int expire(byte[] key, long timeout, TimeUnit unit);
 

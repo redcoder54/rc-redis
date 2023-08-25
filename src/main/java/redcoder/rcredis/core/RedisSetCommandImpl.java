@@ -1,15 +1,15 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.RedisCommand;
+import redcoder.rcredis.core.command.SetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-class SetCommandImpl extends RedisCommandSupport implements SetCommand {
+class RedisSetCommandImpl extends RedisCommandSupport implements SetCommand {
 
-    public SetCommandImpl(RedisConnection connection) {
+    public RedisSetCommandImpl(RedisConnection connection) {
         super(connection);
     }
 

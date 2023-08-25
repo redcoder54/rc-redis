@@ -1,10 +1,10 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import redcoder.rcredis.core.command.KeyCommand;
+import redcoder.rcredis.core.command.ZSetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisConnectionFactory;
-import redcoder.rcredis.core.io.RedisConnectionFactoryImpl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,17 +13,16 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.BYTE_ARRAY;
 
-public class ZSetCommandTests {
+public class ZSetCommandTests extends RedisTestSupport {
 
-    private static BasicCommand command;
+    private static KeyCommand command;
     private static ZSetCommand zSetCommand;
 
     @BeforeAll
     static void beforeAll() {
-        RedisConnectionFactory factory = new RedisConnectionFactoryImpl();
-        RedisConnection connection = factory.create("localhost", 7370);
-        command = new BasicCommandImpl(connection);
-        zSetCommand = new ZSetCommandImpl(connection);
+        RedisConnection connection = getConnection();
+        command = new RedisKeyCommandImpl(connection);
+        zSetCommand = new RedisZSetCommandImpl(connection);
     }
 
     @Test

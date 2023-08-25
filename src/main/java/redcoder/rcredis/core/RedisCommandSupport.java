@@ -1,7 +1,5 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.RedisCommand;
-import redcoder.rcredis.core.RedisCommandException;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.io.RedisInputStream;
 import redcoder.rcredis.core.io.RedisOutputStream;
@@ -11,9 +9,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static redcoder.rcredis.core.ProtocolConstant.*;
 
-public abstract class RedisCommandSupport {
+abstract class RedisCommandSupport {
+
+    private static final byte PLUS_BYTE = '+';
+    private static final byte MINUS_BYTE = '-';
+    private static final byte COLON_BYTE = ':';
+    private static final byte DOLLAR_BYTE = '$';
+    private static final byte ASTERISK_BYTE = '*';
 
     protected RedisConnection connection;
 
@@ -80,7 +83,7 @@ public abstract class RedisCommandSupport {
             case MINUS_BYTE:
                 // error reply
                 String err = in.readLine();
-                throw new RedisCommandException(String.format("Failed to execute command, redis server's reply: %s", err));
+                throw new RedisCommandException(String.format("Failed to execute command, the reply of redis server is: %s", err));
             default:
                 throw new RedisCommandException("unknown reply: " + b + in.readLine());
         }

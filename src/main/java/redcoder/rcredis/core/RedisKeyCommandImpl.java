@@ -1,5 +1,6 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
+import redcoder.rcredis.core.command.KeyCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.concurrent.TimeUnit;
@@ -7,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 import static redcoder.rcredis.core.RedisCommand.DEL;
 import static redcoder.rcredis.core.RedisCommand.EXPIRE;
 
-public class BasicCommandImpl extends RedisCommandSupport implements BasicCommand {
+ class RedisKeyCommandImpl extends RedisCommandSupport implements KeyCommand {
 
-    public BasicCommandImpl(RedisConnection connection) {
+    public RedisKeyCommandImpl(RedisConnection connection) {
         super(connection);
     }
 

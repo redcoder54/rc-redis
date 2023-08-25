@@ -1,32 +1,31 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import redcoder.rcredis.core.command.KeyCommand;
+import redcoder.rcredis.core.command.SetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisConnectionFactory;
-import redcoder.rcredis.core.io.RedisConnectionFactoryImpl;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SetCommandTests {
+public class SetCommandTests extends RedisTestSupport {
 
     private static SetCommand command;
-    private static BasicCommand basicCommand;
+    private static KeyCommand keyCommand;
 
     @BeforeAll
     public static void beforeAll() {
-        RedisConnectionFactory factory = new RedisConnectionFactoryImpl();
-        RedisConnection connection = factory.create("localhost", 7370);
-        command = new SetCommandImpl(connection);
-        basicCommand = new BasicCommandImpl(connection);
+        RedisConnection connection = getConnection();
+        command = new RedisSetCommandImpl(connection);
+        keyCommand = new RedisKeyCommandImpl(connection);
     }
 
     @Test
     void sadd() {
         byte[] key = "users".getBytes();
-        basicCommand.del(key);
+        keyCommand.del(key);
         assertThat(command.sadd(key, "u1".getBytes())).isEqualTo(1);
         assertThat(command.sadd(key, "u2".getBytes())).isEqualTo(1);
         assertThat(command.sadd(key, "u3".getBytes())).isEqualTo(1);
@@ -62,7 +61,7 @@ public class SetCommandTests {
     }
 
     void setup(byte[] key) {
-        basicCommand.del(key);
+        keyCommand.del(key);
         command.sadd(key, "u1".getBytes());
         command.sadd(key, "u2".getBytes());
         command.sadd(key, "u3".getBytes());

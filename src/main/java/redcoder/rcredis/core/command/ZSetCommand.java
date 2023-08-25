@@ -16,7 +16,7 @@ public interface ZSetCommand {
 
     long zcard(byte[] key);
 
-    long zcount(byte[] key, long min, long max);
+    long zcount(byte[] key, double min, double max);
 
     List<Object> zrange(byte[] key, long start, long stop);
 

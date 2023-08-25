@@ -1,14 +1,15 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
+import redcoder.rcredis.core.command.ListCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-class ListCommandImpl extends RedisCommandSupport implements ListCommand {
+class RedisListCommandImpl extends RedisCommandSupport implements ListCommand {
 
-    public ListCommandImpl(RedisConnection connection) {
+    public RedisListCommandImpl(RedisConnection connection) {
         super(connection);
     }
 
@@ -18,8 +19,8 @@ class ListCommandImpl extends RedisCommandSupport implements ListCommand {
     }
 
     @Override
-    public long lpushx(byte[] key, byte[]... elements) {
-        return (long) executeCommand(LPUSHX, mergeByteArray(key, elements));
+    public long lpushx(byte[] key, byte[] element) {
+        return (long) executeCommand(LPUSHX, key, element);
     }
 
     @Override
@@ -43,8 +44,8 @@ class ListCommandImpl extends RedisCommandSupport implements ListCommand {
     }
 
     @Override
-    public long rpushx(byte[] key, byte[]... elements) {
-        return (long) executeCommand(RPUSHX, mergeByteArray(key, elements));
+    public long rpushx(byte[] key, byte[] element) {
+        return (long) executeCommand(RPUSHX, key, element);
     }
 
     @Override

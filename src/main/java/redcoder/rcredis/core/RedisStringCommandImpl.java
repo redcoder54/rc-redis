@@ -1,5 +1,6 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
+import redcoder.rcredis.core.command.StringCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.nio.charset.StandardCharsets;
@@ -7,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-class StringCommandImpl extends RedisCommandSupport implements StringCommand {
+class RedisStringCommandImpl extends RedisCommandSupport implements StringCommand {
 
-    public StringCommandImpl(RedisConnection connection) {
+    public RedisStringCommandImpl(RedisConnection connection) {
         super(connection);
     }
 

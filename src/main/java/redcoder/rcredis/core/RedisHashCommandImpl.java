@@ -1,5 +1,6 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
+import redcoder.rcredis.core.command.HashCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
@@ -7,9 +8,9 @@ import java.util.Map;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-public class HashCommandImpl extends RedisCommandSupport implements HashCommand {
+class RedisHashCommandImpl extends RedisCommandSupport implements HashCommand {
 
-    public HashCommandImpl(RedisConnection connection) {
+    public RedisHashCommandImpl(RedisConnection connection) {
         super(connection);
     }
 

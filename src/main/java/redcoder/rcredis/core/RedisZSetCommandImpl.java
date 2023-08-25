@@ -1,5 +1,6 @@
-package redcoder.rcredis.core.command;
+package redcoder.rcredis.core;
 
+import redcoder.rcredis.core.command.ZSetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
@@ -7,9 +8,9 @@ import java.util.Map;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-public class ZSetCommandImpl extends RedisCommandSupport implements ZSetCommand {
+class RedisZSetCommandImpl extends RedisCommandSupport implements ZSetCommand {
 
-    public ZSetCommandImpl(RedisConnection connection) {
+    public RedisZSetCommandImpl(RedisConnection connection) {
         super(connection);
     }
 
@@ -36,7 +37,7 @@ public class ZSetCommandImpl extends RedisCommandSupport implements ZSetCommand 
     }
 
     @Override
-    public long zcount(byte[] key, long min, long max) {
+    public long zcount(byte[] key, double min, double max) {
         return (long) executeCommand(ZCOUNT, key, convertToBytes(min), convertToBytes(max));
     }
 
