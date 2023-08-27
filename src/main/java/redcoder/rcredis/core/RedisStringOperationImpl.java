@@ -1,6 +1,6 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.command.StringCommand;
+import redcoder.rcredis.core.command.RedisStringCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisStringOperation;
 import redcoder.rcredis.core.operation.StringRedisSerializer;
@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 class RedisStringOperationImpl implements RedisStringOperation {
     
-    private StringCommand stringCommand;
+    private RedisStringCommand stringCommand;
     private StringRedisSerializer serializer;
 
     public RedisStringOperationImpl(RedisConnection connection) {

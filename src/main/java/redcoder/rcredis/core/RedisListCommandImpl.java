@@ -1,13 +1,13 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.command.ListCommand;
+import redcoder.rcredis.core.command.RedisListCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-class RedisListCommandImpl extends RedisCommandSupport implements ListCommand {
+class RedisListCommandImpl extends RedisCommandSupport implements RedisListCommand {
 
     public RedisListCommandImpl(RedisConnection connection) {
         super(connection);

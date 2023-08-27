@@ -1,6 +1,6 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.command.ZSetCommand;
+import redcoder.rcredis.core.command.RedisZSetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-class RedisZSetCommandImpl extends RedisCommandSupport implements ZSetCommand {
+class RedisZSetCommandImpl extends RedisCommandSupport implements RedisZSetCommand {
 
     public RedisZSetCommandImpl(RedisConnection connection) {
         super(connection);

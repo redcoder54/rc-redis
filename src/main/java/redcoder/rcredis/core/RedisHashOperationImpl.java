@@ -1,6 +1,6 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.command.HashCommand;
+import redcoder.rcredis.core.command.RedisHashCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisHashOperation;
 import redcoder.rcredis.core.operation.StringRedisSerializer;
@@ -13,11 +13,11 @@ import java.util.Map;
 class RedisHashOperationImpl implements RedisHashOperation {
 
     private StringRedisSerializer serializer;
-    private HashCommand hashCommand;
+    private RedisHashCommand hashCommand;
 
     public RedisHashOperationImpl(RedisConnection connection) {
         this.serializer = new StringRedisSerializer();
-        this.hashCommand = new RedisHashCommandImpl(connection);
+        this.hashCommand = new RedisRedisHashCommandImpl(connection);
     }
 
     @Override

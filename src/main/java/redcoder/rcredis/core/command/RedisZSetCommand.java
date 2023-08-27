@@ -3,7 +3,7 @@ package redcoder.rcredis.core.command;
 import java.util.List;
 import java.util.Map;
 
-public interface ZSetCommand {
+public interface RedisZSetCommand {
 
     byte[] WITHSCORES = new byte[]{'W', 'I', 'T', 'H', 'S', 'C', 'O', 'R', 'E', 'S'};
     // byte[] BYSCORE = new byte[]{'B', 'Y', 'S', 'C', 'O', 'R', 'E'};

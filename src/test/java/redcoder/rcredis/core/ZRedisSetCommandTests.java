@@ -2,8 +2,8 @@ package redcoder.rcredis.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import redcoder.rcredis.core.command.KeyCommand;
-import redcoder.rcredis.core.command.ZSetCommand;
+import redcoder.rcredis.core.command.RedisKeyCommand;
+import redcoder.rcredis.core.command.RedisZSetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.HashMap;
@@ -13,10 +13,10 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.BYTE_ARRAY;
 
-public class ZSetCommandTests extends RedisTestSupport {
+public class ZRedisSetCommandTests extends RedisTestSupport {
 
-    private static KeyCommand command;
-    private static ZSetCommand zSetCommand;
+    private static RedisKeyCommand command;
+    private static RedisZSetCommand zSetCommand;
 
     @BeforeAll
     static void beforeAll() {

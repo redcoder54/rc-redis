@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class RedisClient implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation, RedisHashOperation {
+public class RedisClient implements RedisKeyOperation, RedisStringOperation,
+        RedisListOperation, RedisSetOperation, RedisZSetOperation, RedisHashOperation {
 
+    private RedisKeyOperation keyOperation;
     private RedisStringOperation stringOperation;
     private RedisListOperation listOperation;
     private RedisSetOperation setOperation;
@@ -19,11 +21,25 @@ public class RedisClient implements RedisStringOperation, RedisListOperation, Re
     public RedisClient(RedisConfiguration conf) {
         RedisConnectionFactory connectionFactory = new RedisConnectionFactoryImpl(conf);
         RedisConnection connection = connectionFactory.create();
+        this.keyOperation = new RedisKeyOperationImpl(connection);
         this.stringOperation = new RedisStringOperationImpl(connection);
         this.listOperation = new RedisListOperationImpl(connection);
         this.setOperation = new RedisSetOperationImpl(connection);
         this.zSetOperation = new RedisZSetOperationImpl(connection);
         this.hashOperation = new RedisHashOperationImpl(connection);
+    }
+
+    // -------- key command
+
+
+    @Override
+    public int expire(String key, long timeout, TimeUnit unit) {
+        return keyOperation.expire(key, timeout, unit);
+    }
+
+    @Override
+    public int del(String key) {
+        return keyOperation.del(key);
     }
 
     // -------- string command
@@ -207,7 +223,7 @@ public class RedisClient implements RedisStringOperation, RedisListOperation, Re
 
     @Override
     public String hget(String key, String field) {
-        return hashOperation.hget(key,field);
+        return hashOperation.hget(key, field);
     }
 
     @Override

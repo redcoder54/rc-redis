@@ -2,7 +2,7 @@ package redcoder.rcredis.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import redcoder.rcredis.core.command.StringCommand;
+import redcoder.rcredis.core.command.RedisStringCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.nio.charset.StandardCharsets;
@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringCommandTests extends RedisTestSupport {
+public class RedisStringCommandTests extends RedisTestSupport {
 
-    private static StringCommand command;
+    private static RedisStringCommand command;
 
     @BeforeAll
     public static void beforeAll() {
