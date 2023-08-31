@@ -2,7 +2,7 @@ package redcoder.rcredis.core.command;
 
 import java.util.List;
 
-public interface SetCommand {
+public interface RedisSetCommand {
 
     int sadd(byte[] key, byte[]... members);
 

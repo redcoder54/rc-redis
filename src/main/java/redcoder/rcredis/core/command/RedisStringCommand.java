@@ -2,7 +2,7 @@ package redcoder.rcredis.core.command;
 
 import java.util.concurrent.TimeUnit;
 
-public interface StringCommand {
+public interface RedisStringCommand {
 
     byte[] PX = {'P', 'X'};
 

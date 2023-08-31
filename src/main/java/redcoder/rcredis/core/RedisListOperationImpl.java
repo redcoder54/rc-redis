@@ -1,6 +1,6 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.command.ListCommand;
+import redcoder.rcredis.core.command.RedisListCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisListOperation;
 import redcoder.rcredis.core.operation.StringRedisSerializer;
@@ -10,7 +10,7 @@ import java.util.List;
 
 class RedisListOperationImpl implements RedisListOperation {
     
-    private ListCommand listCommand;
+    private RedisListCommand listCommand;
     private StringRedisSerializer serializer = new StringRedisSerializer();
 
     public RedisListOperationImpl(RedisConnection connection) {

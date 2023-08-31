@@ -2,7 +2,7 @@ package redcoder.rcredis.core.command;
 
 import java.util.List;
 
-public interface ListCommand {
+public interface RedisListCommand {
 
     long lpush(byte[] key, byte[]... elements);
 

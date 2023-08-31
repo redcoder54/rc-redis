@@ -1,6 +1,6 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.command.ZSetCommand;
+import redcoder.rcredis.core.command.RedisZSetCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisZSetOperation;
 import redcoder.rcredis.core.operation.StringRedisSerializer;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 class RedisZSetOperationImpl implements RedisZSetOperation {
     
-    private ZSetCommand zSetCommand;
+    private RedisZSetCommand zSetCommand;
     private StringRedisSerializer serializer;
 
     public RedisZSetOperationImpl(RedisConnection connection) {

@@ -3,7 +3,7 @@ package redcoder.rcredis.core.command;
 import java.util.List;
 import java.util.Map;
 
-public interface HashCommand {
+public interface RedisHashCommand {
 
     long hset(byte[] key, byte[] field, byte[] value);
 
