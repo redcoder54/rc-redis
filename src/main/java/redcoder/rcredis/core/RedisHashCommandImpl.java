@@ -8,9 +8,9 @@ import java.util.Map;
 
 import static redcoder.rcredis.core.RedisCommand.*;
 
-class RedisRedisHashCommandImpl extends RedisCommandSupport implements RedisHashCommand {
+class RedisHashCommandImpl extends RedisCommandSupport implements RedisHashCommand {
 
-    public RedisRedisHashCommandImpl(RedisConnection connection) {
+    public RedisHashCommandImpl(RedisConnection connection) {
         super(connection);
     }
 

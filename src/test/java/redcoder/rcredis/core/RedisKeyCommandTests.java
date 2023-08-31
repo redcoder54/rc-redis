@@ -3,16 +3,16 @@ package redcoder.rcredis.core;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import redcoder.rcredis.core.command.KeyCommand;
-import redcoder.rcredis.core.command.StringCommand;
+import redcoder.rcredis.core.command.RedisKeyCommand;
+import redcoder.rcredis.core.command.RedisStringCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.concurrent.TimeUnit;
 
-public class KeyCommandTests extends AbstractRedisTestsSupport {
+public class RedisKeyCommandTests extends AbstractRedisTestsSupport {
 
-    private static KeyCommand command;
-    private static StringCommand stringCommand;
+    private static RedisKeyCommand command;
+    private static RedisStringCommand stringCommand;
 
     @BeforeAll
     public static void beforeAll() {

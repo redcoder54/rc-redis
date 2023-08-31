@@ -2,18 +2,18 @@ package redcoder.rcredis.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import redcoder.rcredis.core.command.KeyCommand;
-import redcoder.rcredis.core.command.ListCommand;
+import redcoder.rcredis.core.command.RedisKeyCommand;
+import redcoder.rcredis.core.command.RedisListCommand;
 import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ListCommandTests extends AbstractRedisTestsSupport {
+public class RedisListCommandTests extends AbstractRedisTestsSupport {
 
-    private static KeyCommand command;
-    private static ListCommand listCommand;
+    private static RedisKeyCommand command;
+    private static RedisListCommand listCommand;
 
     @BeforeAll
     public static void beforeAll() {

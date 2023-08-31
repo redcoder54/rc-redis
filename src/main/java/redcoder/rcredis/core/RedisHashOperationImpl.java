@@ -17,7 +17,7 @@ class RedisHashOperationImpl implements RedisHashOperation {
 
     public RedisHashOperationImpl(RedisConnection connection) {
         this.serializer = new StringRedisSerializer();
-        this.hashCommand = new RedisRedisHashCommandImpl(connection);
+        this.hashCommand = new RedisHashCommandImpl(connection);
     }
 
     @Override
