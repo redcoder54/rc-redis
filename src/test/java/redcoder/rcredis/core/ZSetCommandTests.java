@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.BYTE_ARRAY;
 
-public class ZSetCommandTests extends RedisTestSupport {
+public class ZSetCommandTests extends AbstractRedisTestsSupport {
 
     private static KeyCommand command;
     private static ZSetCommand zSetCommand;

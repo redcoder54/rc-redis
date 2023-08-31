@@ -1,24 +1,26 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisConnectionFactory;
 import redcoder.rcredis.core.operation.*;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class RedisClient implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation, RedisHashOperation {
+public class Redis implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation,
+        RedisHashOperation, Closeable {
 
+    private RedisConnection connection;
     private RedisStringOperation stringOperation;
     private RedisListOperation listOperation;
     private RedisSetOperation setOperation;
     private RedisZSetOperation zSetOperation;
     private RedisHashOperation hashOperation;
 
-    public RedisClient(RedisConfiguration conf) {
-        RedisConnectionFactory connectionFactory = new RedisConnectionFactoryImpl(conf);
-        RedisConnection connection = connectionFactory.create();
+    public Redis(RedisConnection connection) {
+        this.connection = connection;
         this.stringOperation = new RedisStringOperationImpl(connection);
         this.listOperation = new RedisListOperationImpl(connection);
         this.setOperation = new RedisSetOperationImpl(connection);
@@ -207,11 +209,20 @@ public class RedisClient implements RedisStringOperation, RedisListOperation, Re
 
     @Override
     public String hget(String key, String field) {
-        return hashOperation.hget(key,field);
+        return hashOperation.hget(key, field);
     }
 
     @Override
     public List<String> hmget(String key, String... fields) {
         return hashOperation.hmget(key, fields);
+    }
+
+    @Override
+    public void close() {
+        try {
+            this.connection.close();
+        } catch (IOException e) {
+            throw new RedisConnectionException(e);
+        }
     }
 }

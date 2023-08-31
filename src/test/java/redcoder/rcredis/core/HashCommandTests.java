@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.command.HashCommand;
 import redcoder.rcredis.core.command.KeyCommand;
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisConnectionFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,18 +13,14 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.BYTE_ARRAY;
 
-public class HashCommandTests {
+public class HashCommandTests extends AbstractRedisTestsSupport {
 
     private static KeyCommand command;
     private static HashCommand hashCommand;
 
     @BeforeAll
     static void beforeAll() {
-        RedisConfiguration conf = new RedisConfiguration();
-        conf.setHost("localhost");
-        conf.setPort(7370);
-        RedisConnectionFactory factory = new RedisConnectionFactoryImpl(conf);
-        RedisConnection connection = factory.create();
+        RedisConnection connection = getConnection();
         command = new RedisKeyCommandImpl(connection);
         hashCommand = new RedisHashCommandImpl(connection);
     }

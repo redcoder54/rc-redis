@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RedisStringOperationTests extends RedisTestSupport {
+public class RedisStringOperationTests extends AbstractRedisTestsSupport {
 
     private static RedisStringOperation operation;
     @BeforeAll

@@ -3,7 +3,7 @@ package redcoder.rcredis.core;
 import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.io.RedisConnectionFactory;
 
-public class RedisTestSupport {
+public class AbstractRedisTestsSupport {
 
     protected static RedisConnection getConnection() {
         RedisConfiguration conf = new RedisConfiguration();

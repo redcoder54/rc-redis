@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class RedisHashOperationTests extends RedisTestSupport {
+public class RedisHashOperationTests extends AbstractRedisTestsSupport {
 
     private static RedisHashOperation operation;
 

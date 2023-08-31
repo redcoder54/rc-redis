@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringCommandTests extends RedisTestSupport {
+public class StringCommandTests extends AbstractRedisTestsSupport {
 
     private static StringCommand command;
 

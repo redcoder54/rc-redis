@@ -9,7 +9,7 @@ import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.concurrent.TimeUnit;
 
-public class KeyCommandTests extends RedisTestSupport {
+public class KeyCommandTests extends AbstractRedisTestsSupport {
 
     private static KeyCommand command;
     private static StringCommand stringCommand;

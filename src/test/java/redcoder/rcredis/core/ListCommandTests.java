@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ListCommandTests extends RedisTestSupport {
+public class ListCommandTests extends AbstractRedisTestsSupport {
 
     private static KeyCommand command;
     private static ListCommand listCommand;
