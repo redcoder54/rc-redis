@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A simple redis client that supports common redis command.
+ */
 public class Redis implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation,
         RedisHashOperation, Closeable {
 

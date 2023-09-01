@@ -1,8 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisInputStream;
-import redcoder.rcredis.core.io.RedisOutputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,12 +9,6 @@ import java.util.List;
 
 
 abstract class RedisCommandSupport {
-
-    private static final byte PLUS_BYTE = '+';
-    private static final byte MINUS_BYTE = '-';
-    private static final byte COLON_BYTE = ':';
-    private static final byte DOLLAR_BYTE = '$';
-    private static final byte ASTERISK_BYTE = '*';
 
     protected RedisConnection connection;
 
@@ -40,79 +32,42 @@ abstract class RedisCommandSupport {
     }
 
     protected Object executeCommand(RedisCommand command, byte[]... args) {
-        RedisInputStream in = connection.getInputStream();
-        RedisOutputStream out = connection.getOutputStream();
         try {
-            out.write(ASTERISK_BYTE);
-            out.writeIntCRLF(args.length + 1);
-            // write command name
-            byte[] c_bytes = command.name().getBytes();
-            out.write(DOLLAR_BYTE);
-            out.writeIntCRLF(c_bytes.length);
-            out.writeByteCRLF(c_bytes);
-            // write args
-            for (byte[] arg : args) {
-                out.write(DOLLAR_BYTE);
-                out.writeIntCRLF(arg.length);
-                out.writeByteCRLF(arg);
-            }
-            out.flush();
-
-            // process reply
-            return processReply(in);
+            connection.sendCommand(command, args);
+            return processReply();
         } catch (IOException e) {
-            throw new RedisCommandException(e);
+            throw new RedisException("execute command error", e);
         }
     }
 
-    private Object processReply(RedisInputStream in) throws IOException {
-        byte b = in.readByte();
-        switch (b) {
-            case PLUS_BYTE:
-                // simple string reply
-                return in.readLine();
-            case DOLLAR_BYTE:
-                // bulk string reply
-                return processBulkStringReply(in);
-            case COLON_BYTE:
-                // integer reply
-                return in.readLong();
-            case ASTERISK_BYTE:
-                // byte array reply
-                return processArrayReply(in);
-            case MINUS_BYTE:
-                // error reply
-                String err = in.readLine();
-                throw new RedisCommandException(String.format("Failed to execute command, the reply of redis server is: %s", err));
+    private Object processReply() throws IOException {
+        RedisConnection.DataType type = connection.getType();
+        switch (type) {
+            case SIMPLE_ERRORS:
+                return connection.getSimpleErrorsReply();
+            case SIMPLE_STRINGS:
+                return connection.getSimpleStringsReply();
+            case INTEGERS:
+                return connection.getIntegersReply();
+            case BULK_STRINGS:
+                return connection.getBulkStringsReply();
+            case ARRAYS:
+                return processArraysReply();
             default:
-                throw new RedisCommandException("unknown reply: " + b + in.readLine());
+                throw new RedisException("Unsupported DataType: " + type);
         }
     }
 
-    private Object processBulkStringReply(RedisInputStream in) {
-        int len = in.readInt();
-        if (len == -1) {
-            // null reply
-            return null;
-        }
-        if (len == 0) {
-            // empty string
-            return "".getBytes();
-        }
-        byte[] bytes = new byte[len];
-        in.readBytes(bytes);
-        return bytes;
-    }
 
-    private Object processArrayReply(RedisInputStream in) throws IOException {
-        int alen = in.readInt();
+    private Object processArraysReply() throws IOException {
+        int alen = connection.getArraysLength();
         if (alen == 0) {
             // empty array
             return Collections.emptyList();
         }
         List<Object> result = new ArrayList<>();
         for (int i = 0; i < alen; i++) {
-            result.add(processReply(in));
+            result.add(processReply());
         }
         return result;
     }
