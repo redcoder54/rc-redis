@@ -1,7 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.command.RedisHashCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisHashOperation;
 import redcoder.rcredis.core.operation.StringRedisSerializer;
 

@@ -1,9 +1,5 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.io.RedisConnection;
-import redcoder.rcredis.core.io.RedisInputStream;
-import redcoder.rcredis.core.io.RedisOutputStream;
-
 import java.io.IOException;
 import java.net.Socket;
 

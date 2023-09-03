@@ -9,226 +9,223 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A simple redis client that supports common redis command.
- * <p>
- * The instance of Redis is not thread-safe. If you need use redis in multi
- * thread environment, please use {@link PooledRedis}.
- * </p>
+ * A thread-safe redis client that uses connection pool.
  */
-public class Redis implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation,
+public class PooledRedis implements RedisStringOperation, RedisListOperation, RedisSetOperation, RedisZSetOperation,
         RedisHashOperation, Closeable {
 
-    private RedisConnection connection;
-    private RedisStringOperation stringOperation;
-    private RedisListOperation listOperation;
-    private RedisSetOperation setOperation;
-    private RedisZSetOperation zSetOperation;
-    private RedisHashOperation hashOperation;
+    public interface RedisAction<T> {
 
-    public Redis(RedisConnection connection) {
-        this.connection = connection;
-        this.stringOperation = new RedisStringOperationImpl(connection);
-        this.listOperation = new RedisListOperationImpl(connection);
-        this.setOperation = new RedisSetOperationImpl(connection);
-        this.zSetOperation = new RedisZSetOperationImpl(connection);
-        this.hashOperation = new RedisHashOperationImpl(connection);
+        T doAction(Redis redis);
+
     }
 
-    // -------- string command
+    private RedisPool pool;
+
+    public PooledRedis(RedisPool pool) {
+        this.pool = pool;
+    }
+
+    public <T> T execute(RedisAction<T> action) {
+        Redis redis = pool.getResource();
+        try {
+            return action.doAction(redis);
+        } finally {
+            pool.returnResource(redis);
+        }
+    }
+
     @Override
     public void set(String key, String value) {
-        stringOperation.set(key, value);
+        execute((RedisAction<Void>) redis -> {
+            redis.set(key, value);
+            return null;
+        });
     }
 
     @Override
     public void set(String key, String value, long timeout, TimeUnit unit) {
-        stringOperation.set(key, value, timeout, unit);
+        execute((RedisAction<Void>) redis -> {
+            redis.set(key, value, timeout, unit);
+            return null;
+        });
     }
 
     @Override
     public long incr(String key) {
-        return stringOperation.incr(key);
+        return execute(redis -> redis.incr(key));
     }
 
     @Override
     public long decr(String key) {
-        return stringOperation.decr(key);
+        return execute(redis -> redis.decr(key));
     }
 
     @Override
     public String get(String key) {
-        return stringOperation.get(key);
+        return execute(redis -> redis.get(key));
     }
-
-    // ---------- list command
 
     @Override
     public long lpush(String key, String... elements) {
-        return listOperation.lpush(key, elements);
+        return execute(redis -> redis.lpush(key, elements));
     }
 
     @Override
     public long lpushx(String key, String element) {
-        return listOperation.lpushx(key, element);
+        return execute(redis -> redis.lpushx(key, element));
     }
 
     @Override
     public List<String> lrange(String key, long start, long end) {
-        return listOperation.lrange(key, start, end);
+        return execute(redis -> redis.lrange(key, start, end));
     }
 
     @Override
     public String lpop(String key) {
-        return listOperation.lpop(key);
+        return execute(redis -> redis.lpop(key));
     }
 
     @Override
     public long llen(String key) {
-        return listOperation.llen(key);
+        return execute(redis -> redis.llen(key));
     }
 
     @Override
     public long rpush(String key, String... elements) {
-        return listOperation.rpush(key, elements);
+        return execute(redis -> redis.rpush(key, elements));
     }
 
     @Override
     public long rpushx(String key, String element) {
-        return listOperation.rpushx(key, element);
+        return execute(redis -> redis.rpushx(key, element));
     }
 
     @Override
     public String rpop(String key) {
-        return listOperation.rpop(key);
+        return execute(redis -> redis.rpop(key));
     }
-
-    // ------------ set command
 
     @Override
     public int sadd(String key, String... members) {
-        return setOperation.sadd(key, members);
+        return execute(redis -> redis.sadd(key, members));
     }
 
     @Override
     public int srem(String key, String... members) {
-        return setOperation.srem(key, members);
+        return execute(redis -> redis.srem(key, members));
     }
 
     @Override
     public String spop(String key) {
-        return setOperation.spop(key);
+        return execute(redis -> redis.spop(key));
     }
 
     @Override
     public List<String> spop(String key, int count) {
-        return setOperation.spop(key, count);
+        return execute(redis -> redis.spop(key, count));
     }
 
     @Override
     public List<String> smembers(String key) {
-        return setOperation.smembers(key);
+        return execute(redis -> redis.smembers(key));
     }
-
-    // ------------- zset command
 
     @Override
     public long zadd(String key, double score, String member) {
-        return zSetOperation.zadd(key, score, member);
+        return execute(redis -> redis.zadd(key, score, member));
     }
 
     @Override
     public long zadd(String key, Map<String, Double> memberScores) {
-        return zadd(key, memberScores);
+        return execute(redis -> redis.zadd(key, memberScores));
     }
 
     @Override
     public long zcard(String key) {
-        return zSetOperation.zcard(key);
+        return execute(redis -> redis.zcard(key));
     }
 
     @Override
     public long zcount(String key, double min, double max) {
-        return zSetOperation.zcount(key, min, max);
+        return execute(redis -> redis.zcount(key, min, max));
     }
 
     @Override
     public List<String> zrange(String key, long start, long stop) {
-        return zSetOperation.zrange(key, start, stop);
+        return execute(redis -> redis.zrange(key, start, stop));
     }
 
     @Override
     public List<Tuple<String, Double>> zrangeWithScores(String key, long start, long stop) {
-        return zSetOperation.zrangeWithScores(key, start, stop);
+        return execute(redis -> redis.zrangeWithScores(key, start, stop));
     }
 
     @Override
     public List<String> zrangeByScore(String key, double min, double max) {
-        return zSetOperation.zrangeByScore(key, min, max);
+        return execute(redis -> redis.zrangeByScore(key, min, max));
     }
 
     @Override
     public List<Tuple<String, Double>> zrangeByScoreWithScores(String key, double min, double max) {
-        return zSetOperation.zrangeByScoreWithScores(key, min, max);
+        return execute(redis -> redis.zrangeByScoreWithScores(key, min, max));
     }
 
     @Override
     public List<String> zrevRange(String key, long start, long stop) {
-        return zSetOperation.zrevRange(key, start, stop);
+        return execute(redis -> redis.zrevRange(key, start, stop));
     }
 
     @Override
     public List<Tuple<String, Double>> zrevRangeWithScores(String key, long start, long stop) {
-        return zSetOperation.zrevRangeWithScores(key, start, stop);
+        return execute(redis -> redis.zrevRangeWithScores(key, start, stop));
     }
 
     @Override
     public List<String> zrevRangeByScore(String key, double min, double max) {
-        return zSetOperation.zrevRangeByScore(key, min, max);
+        return execute(redis -> redis.zrevRangeByScore(key, min, max));
     }
 
     @Override
     public List<Tuple<String, Double>> zrevRangeByScoreWithScores(String key, double min, double max) {
-        return zSetOperation.zrevRangeByScoreWithScores(key, min, max);
+        return execute(redis -> redis.zrevRangeByScoreWithScores(key, min, max));
     }
 
     @Override
     public long zrem(String key, String... members) {
-        return zSetOperation.zrem(key, members);
+        return execute(redis -> redis.zrem(key, members));
     }
 
     @Override
     public Double zscore(String key, String member) {
-        return zSetOperation.zscore(key, member);
+        return execute(redis -> redis.zscore(key, member));
     }
-
-    // ------------- hash command
 
     @Override
     public long hset(String key, String field, String value) {
-        return hashOperation.hset(key, field, value);
+        return execute(redis -> redis.hset(key, field, value));
     }
 
     @Override
     public void hmset(String key, Map<String, String> hash) {
-        hashOperation.hmset(key, hash);
+        execute((RedisAction<Void>) redis -> {
+            redis.hmset(key, hash);
+            return null;
+        });
     }
 
     @Override
     public String hget(String key, String field) {
-        return hashOperation.hget(key, field);
+        return execute(redis -> redis.hget(key, field));
     }
 
     @Override
     public List<String> hmget(String key, String... fields) {
-        return hashOperation.hmget(key, fields);
+        return execute(redis -> redis.hmget(key, fields));
     }
 
     @Override
-    public void close() {
-        try {
-            this.connection.close();
-        } catch (IOException e) {
-            throw new RedisConnectionException(e);
-        }
+    public void close() throws IOException {
+        pool.close();
     }
 }

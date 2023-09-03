@@ -2,7 +2,6 @@ package redcoder.rcredis.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisStringOperation;
 
 import java.util.UUID;

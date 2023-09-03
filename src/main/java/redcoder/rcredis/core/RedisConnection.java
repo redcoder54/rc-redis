@@ -1,6 +1,4 @@
-package redcoder.rcredis.core.io;
-
-import redcoder.rcredis.core.RedisCommand;
+package redcoder.rcredis.core;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -1,7 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.command.RedisKeyCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.concurrent.TimeUnit;
 

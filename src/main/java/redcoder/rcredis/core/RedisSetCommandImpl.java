@@ -1,7 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.command.RedisSetCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
 

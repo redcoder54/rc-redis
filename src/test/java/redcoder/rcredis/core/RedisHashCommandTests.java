@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.command.RedisHashCommand;
 import redcoder.rcredis.core.command.RedisKeyCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.HashMap;
 import java.util.List;

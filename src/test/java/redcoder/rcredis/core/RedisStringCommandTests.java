@@ -3,7 +3,6 @@ package redcoder.rcredis.core;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import redcoder.rcredis.core.command.RedisStringCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;

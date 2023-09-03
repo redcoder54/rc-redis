@@ -1,7 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.command.RedisStringCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;

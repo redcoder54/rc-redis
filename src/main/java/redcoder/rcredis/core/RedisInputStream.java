@@ -1,4 +1,4 @@
-package redcoder.rcredis.core.io;
+package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.RedisCommandException;
 import redcoder.rcredis.core.RedisConnectionException;

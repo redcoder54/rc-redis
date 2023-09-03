@@ -1,7 +1,5 @@
 package redcoder.rcredis.core;
 
-import redcoder.rcredis.core.io.RedisConnection;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;

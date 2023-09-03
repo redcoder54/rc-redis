@@ -1,4 +1,4 @@
-package redcoder.rcredis.core.io;
+package redcoder.rcredis.core;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

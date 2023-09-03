@@ -1,7 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.command.RedisZSetCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 
 import java.util.List;
 import java.util.Map;
@@ -87,7 +86,7 @@ class RedisZSetCommandImpl extends RedisCommandSupport implements RedisZSetComma
     }
 
     @Override
-    public byte[] zscore(byte[] key, byte[] members) {
-        return (byte[]) executeCommand(ZSCORE, key, members);
+    public byte[] zscore(byte[] key, byte[] member) {
+        return (byte[]) executeCommand(ZSCORE, key, member);
     }
 }

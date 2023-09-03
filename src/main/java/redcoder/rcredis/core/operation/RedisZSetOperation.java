@@ -31,5 +31,5 @@ public interface RedisZSetOperation {
 
     long zrem(String key, String... members);
 
-    Double zscore(String key, String members);
+    Double zscore(String key, String member);
 }

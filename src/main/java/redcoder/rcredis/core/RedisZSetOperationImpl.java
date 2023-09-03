@@ -1,7 +1,6 @@
 package redcoder.rcredis.core;
 
 import redcoder.rcredis.core.command.RedisZSetCommand;
-import redcoder.rcredis.core.io.RedisConnection;
 import redcoder.rcredis.core.operation.RedisZSetOperation;
 import redcoder.rcredis.core.operation.StringRedisSerializer;
 import redcoder.rcredis.core.operation.Tuple;
@@ -120,8 +119,8 @@ class RedisZSetOperationImpl implements RedisZSetOperation {
     }
 
     @Override
-    public Double zscore(String key, String members) {
-        byte[] bytes = zSetCommand.zscore(serializer.serialize(key), serializer.serialize(members));
+    public Double zscore(String key, String member) {
+        byte[] bytes = zSetCommand.zscore(serializer.serialize(key), serializer.serialize(member));
         if (bytes == null) {
             return null;
         }
