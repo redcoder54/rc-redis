@@ -8,10 +8,17 @@ class RedisPooledObjectFactory extends BasePooledObjectFactory<Redis> {
 
     private String host;
     private int port;
+    private String password;
 
     public RedisPooledObjectFactory(String host, int port) {
         this.host = host;
         this.port = port;
+    }
+
+    public RedisPooledObjectFactory(String host, int port, String password) {
+        this.host = host;
+        this.port = port;
+        this.password = password;
     }
 
     @Override

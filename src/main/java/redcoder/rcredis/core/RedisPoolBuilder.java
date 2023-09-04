@@ -1,5 +1,8 @@
 package redcoder.rcredis.core;
 
+/**
+ * A builder used to build a {@link RedisPool} instance.
+ */
 public interface RedisPoolBuilder {
 
     /**
@@ -17,6 +20,11 @@ public interface RedisPoolBuilder {
      * </p>
      */
     RedisPoolBuilder port(int port);
+
+    /**
+     * Set redis server's password.
+     */
+    RedisPoolBuilder password(String password);
 
     /**
      * Set the max num of redis instance that redis pool can hold.

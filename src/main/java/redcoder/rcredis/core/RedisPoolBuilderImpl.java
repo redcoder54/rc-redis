@@ -9,6 +9,7 @@ class RedisPoolBuilderImpl implements RedisPoolBuilder {
 
     private String host = "localhost";
     private int port = 6379;
+    private String password;
     private int maxTotal = 8;
     private int maxIdle = 0;
     private int minIdle = 0;
@@ -27,6 +28,12 @@ class RedisPoolBuilderImpl implements RedisPoolBuilder {
     @Override
     public RedisPoolBuilder port(int port) {
         this.port = port;
+        return this;
+    }
+
+    @Override
+    public RedisPoolBuilder password(String password) {
+        this.password = password;
         return this;
     }
 
@@ -80,7 +87,7 @@ class RedisPoolBuilderImpl implements RedisPoolBuilder {
 
     @Override
     public RedisPool build() {
-        PooledObjectFactory<Redis> factory = new RedisPooledObjectFactory(host, port);
+        PooledObjectFactory<Redis> factory = new RedisPooledObjectFactory(host, port, password);
 
         GenericObjectPoolConfig<Redis> config = new GenericObjectPoolConfig<>();
         config.setMaxTotal(maxTotal);

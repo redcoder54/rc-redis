@@ -1,6 +1,7 @@
 package redcoder.rcredis.core;
 
 public enum RedisCommand {
+    AUTH,
     EXPIRE,
     TTL,
     PING,

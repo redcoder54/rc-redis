@@ -2,6 +2,7 @@ package redcoder.rcredis.core;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 class RedisConnectionImpl implements RedisConnection {
 
@@ -13,6 +14,7 @@ class RedisConnectionImpl implements RedisConnection {
 
     private String host;
     private int port = 6379;
+    private String password;
     private Socket socket;
     private boolean connected;
     private RedisInputStream in;
@@ -23,8 +25,13 @@ class RedisConnectionImpl implements RedisConnection {
     }
 
     public RedisConnectionImpl(String host, int port) {
+        this(host, port, null);
+    }
+
+    public RedisConnectionImpl(String host, int port, String password) {
         this.host = host;
         this.port = port;
+        this.password = password;
     }
 
     @Override
@@ -53,6 +60,20 @@ class RedisConnectionImpl implements RedisConnection {
         in = new RedisInputStream(socket.getInputStream());
         out = new RedisOutputStream(socket.getOutputStream());
         connected = true;
+
+        auth();
+    }
+
+    private void auth() throws IOException {
+        if (password != null && !password.isEmpty()) {
+            // auth
+            sendCommand(RedisCommand.AUTH, password.getBytes(StandardCharsets.UTF_8));
+            DataType type = getType();
+            if (type == DataType.SIMPLE_ERRORS) {
+                throw new RedisConnectionException("Auth failed: " + new String(getSimpleErrorsReply()));
+            }
+            getSimpleStringsReply();
+        }
     }
 
     @Override
