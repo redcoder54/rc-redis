@@ -225,7 +225,11 @@ public class PooledRedis implements RedisStringOperation, RedisListOperation, Re
     }
 
     @Override
-    public void close() throws IOException {
-        pool.close();
+    public void close() {
+        try {
+            pool.close();
+        } catch (IOException e) {
+            throw new RedisConnectionException("Can't close redis pool", e);
+        }
     }
 }

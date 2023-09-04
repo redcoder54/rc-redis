@@ -228,7 +228,7 @@ public class Redis implements RedisStringOperation, RedisListOperation, RedisSet
         try {
             this.connection.close();
         } catch (IOException e) {
-            throw new RedisConnectionException(e);
+            throw new RedisConnectionException("Can't close redis connection", e);
         }
     }
 }

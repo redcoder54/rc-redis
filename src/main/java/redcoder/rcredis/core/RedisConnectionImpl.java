@@ -141,7 +141,7 @@ class RedisConnectionImpl implements RedisConnection {
         try {
             socket.close();
         } catch (IOException e) {
-            throw new RedisConnectionException(e);
+            throw new RedisException("Can't close socket", e);
         }
     }
 }

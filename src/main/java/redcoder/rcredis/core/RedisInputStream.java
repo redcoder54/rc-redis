@@ -94,10 +94,10 @@ public class RedisInputStream extends FilterInputStream {
                 limit = in.read(buf);
                 pos = 0;
                 if (limit == -1) {
-                    throw new RedisConnectionException("Unexpected end of stream.");
+                    throw new RedisException("Unexpected end of stream.");
                 }
             } catch (IOException e) {
-                throw new RedisConnectionException(e);
+                throw new RedisException("Can't read bytes from the input stream of the redis", e);
             }
         }
     }
