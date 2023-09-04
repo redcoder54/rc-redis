@@ -1,6 +1,6 @@
 # A simple redis client
 
-This is a simple redis client that implements some of the command of redis.
+This is a simple redis client that implements some of the commands of redis.
 
 This redis client also supports connection pool, if you need to use pool, 
 please add apache-commons-pool2 dependency in your project pom.xml:
